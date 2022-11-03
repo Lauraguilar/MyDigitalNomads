@@ -1,0 +1,80 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+.box .input {
+  height: 50px;
+  border: 1px solid;
+  border-radius: 5px;
+  outline: none;
+  transform-origin: top left;
+  font-size: 1rem;
+  background-color: #fff;
+  padding: 0px 15px;
+}
+.box .label {
+  position: absolute;
+  pointer-events: none;
+  top: 15px;
+  left: 15px;
+  transition: 0.3s all;
+  color: rgb(118, 118, 118);
+}
+.box .input:focus + .label,
+.box .input:not(:placeholder-shown) + .label {
+  top: -10px;
+  font-size: 0.9rem;
+  background-color: #fff;
+  padding: 0 5px;
+  transition: 0.3s all;
+}
+
+body {
+  background-color: #f7f1dc;
+}
+
+.section {
+  width: 100%;
+  height: 100ch;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  font-size: 1, 6rem;
+}
+
+.card {
+  width: 50%;
+  padding: 25px;
+  border-radius: 15px;
+  border: solid;
+  border-color: #66645d;
+  box-shadow: 10px 5px 5px #66645d;
+  background-color: #fff;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.button {
+  height: 50px;
+  width: 100%;
+  border: 1px solid;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  padding: 0px 15px;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=index.css.map */

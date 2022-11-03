@@ -1,62 +1,111 @@
-$(() => {
-  $("form[name='registration']").validate({
-    rules: {
-      dateOfBirth: {
-        required: true,
-        date: true,
-      },
+let form = document.getElementById("registration");
 
-      password: {
-        required: true,
-        minlength: 5,
-      },
+const checkDate = (field) => {
+  let minYear = 1902;
+  let maxYear = new Date().getFullYear();
 
-      passwordValidation: {
-        required: true,
-        minlength: 5,
-        equalTo: "[name='password']",
-      },
-    },
+  let errorMsg = "";
 
-    messages: {
-      dateOfBirth: "Please enter a valid date",
+  if (field.value != "") {
+    const pdate = field.value.split("-");
+    const yy = parseInt(pdate[0]);
+    if (yy < minYear || yy > maxYear) {
+      errorMsg =
+        "Invalid value for year: " +
+        yy +
+        " - must be between " +
+        minYear +
+        " and " +
+        maxYear;
+    }
+  } else {
+    errorMsg = "Empty date not allowed!";
+  }
 
-      password: {
-        required: "Please provide a password",
-        minlength: "Your password must have at least 5 characters.",
-      },
+  if (errorMsg != "") {
+    Swal.fire({
+      title: "Error!",
+      text: errorMsg,
+      icon: "error",
+      confirmButtonText: "Ok",
+    });
+    return false;
+  }
 
-      passwordValidation: {
-        required: "Please provide a password",
-        minlength: "Your password must have at least 5 characters.",
-        equalTo: "Passwords are not the same",
-      },
-    },
+  return true;
+};
+const checkPassword = (passwordField, validationField) => {
+  let errorMsg = "";
 
-    submitHandler: (form) => {
-      $.ajax({
-        url: form.action,
-        type: form.method,
-        data: $(form).serialize(),
-        success: (response) => {
-          $("#answers").html(response);
+  // regular expression to password
+  const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([A-Za-z\d]|[^ ]){8,}$/;
+
+  if (passwordField.value !== "" || validationField.value !== "") {
+    if (!re.test(passwordField.value)) {
+      errorMsg =
+        "Password should have Minimum 8 characters (1 uppercase and 1 lowercase and 1 number) and does not accept empty spaces";
+    }
+    if (!re.test(validationField.value)) {
+      errorMsg =
+        "Validation password should have Minimum 8 characters (1 uppercase and 1 lowercase and 1 number) and does not accept empty spaces";
+    }
+  } else {
+    errorMsg = "Empty password or validation password not allowed!";
+  }
+
+  if (errorMsg != "") {
+    Swal.fire({
+      title: "Error!",
+      text: errorMsg,
+      icon: "error",
+      confirmButtonText: "Ok",
+    });
+    return false;
+  }
+  return true;
+};
+
+const checkForm = () => {
+  if (!checkDate(form.dateOfBirth)) return false;
+  if (!checkPassword(form.password, form.passwordValidation)) return false;
+  return true;
+};
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  if (checkForm()) {
+    const data = new FormData(event.target);
+    fetch(event.target.action, {
+      method: form.method,
+      body: data,
+      headers: { Accept: "application/json" },
+    })
+      .then((response) => {
+        if (response.ok) {
           Swal.fire({
             title: "Success!",
             text: "Your registration was successful",
             icon: "success",
             confirmButtonText: "Ok",
           });
-        },
-        error: () => {
+          form.reset();
+        } else {
           Swal.fire({
             title: "Error!",
             text: "Something went wrong, please try again later",
             icon: "error",
             confirmButtonText: "Ok",
           });
-        
-        },
+        }
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong, please try again later",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       });
-    },
-  });
-});
+  }
+};
+form.addEventListener("submit", handleSubmit);

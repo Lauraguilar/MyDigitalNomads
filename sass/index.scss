@@ -1,0 +1,45 @@
+@import "variables";
+@import "inputBox";
+@import "flexDirections";
+
+body {
+  background-color: $color-cream;
+}
+
+.section {
+  width: 100%;
+  height: 100ch;
+  @include flexRowCenter;
+}
+
+.title {
+  text-align: center;
+  font-size: $f-big;
+}
+
+.card {
+  width: 50%;
+  padding: 25px;
+  border-radius: $br-big;
+  border: solid;
+  border-color: $color-grey-shadow;
+  box-shadow: 10px 5px 5px $color-grey-shadow;
+  background-color: $color-white;
+}
+
+.form {
+  @include flexColumCenter;
+  gap: 20px;
+}
+
+.button {
+  height: 50px;
+  width: 100%;
+  border: 1px solid;
+  border-radius: $br-small;
+  outline: none;
+  font-size: $f-normal;
+  padding: 0px 15px;
+  cursor: pointer;
+}
+
